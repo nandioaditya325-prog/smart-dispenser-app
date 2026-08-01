@@ -5,10 +5,12 @@ use App\Http\Controllers\Web\DashboardController;
 
 Route::get('/', [DashboardController::class, 'index']);
 
-// Penanganan jika halaman /checkout diakses via GET (diketik langsung / di-refresh di HP)
+// --- INI WAJIB ADA ---
+// Menangani jika diakses langsung lewat address bar di HP (GET)
 Route::get('/checkout', function () {
     return redirect('/');
 });
+// ---------------------
 
 Route::post('/checkout', [DashboardController::class, 'checkout'])->name('checkout');
 Route::get('/payment/{id}', [DashboardController::class, 'payment'])->name('payment');
