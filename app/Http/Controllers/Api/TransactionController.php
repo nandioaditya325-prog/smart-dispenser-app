@@ -13,7 +13,7 @@ class TransactionController extends Controller
         $rfid = $request->input('rfid_uid');
         $volume = $request->input('volume_ml');
 
-        // Masukkan HANYA rfid_uid dan volume_ml (tanpa kolom status)
+        // Hanya insert rfid_uid dan volume_ml (TIDAK menyertakan kolom status)
         $stored = DB::table('transactions')->insert([
             'rfid_uid'  => $rfid,
             'volume_ml' => $volume,
