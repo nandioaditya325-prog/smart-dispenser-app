@@ -17,3 +17,7 @@ use App\Http\Controllers\Api\TransactionController; // Panggil controllernya
 // Rute untuk menerima data transaksi baru dari ESP32
 // URL-nya akan menjadi: http://127.0.0.1:8000/api/transactions
 Route::post('/transactions', [TransactionController::class, 'store']);
+Route::get('/run-migrate', function () {
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    return 'Migration Success!';
+});
