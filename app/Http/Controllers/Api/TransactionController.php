@@ -1,32 +1,35 @@
-public function store(Request $request)
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class TransactionController extends Controller
 {
-    $request->validate([
-        'rfid_uid'  => 'required',
-        'volume_ml' => 'nullable|numeric',
-    ]);
+    public function store(Request $request)
+    {
+        $rfid = $request->input('rfid_uid');
+        $volume = $request->input('volume_ml');
 
-    $rfid = $request->input('rfid_uid');
-    $volume = $request->input('volume_ml', 0);
-    $now = now();
+        // Masukkan HANYA rfid_uid dan volume_ml (tanpa kolom status)
+        $stored = DB::table('transactions')->insert([
+            'rfid_uid'  => $rfid,
+            'volume_ml' => $volume,
+        ]);
 
-    // Hapus 'status' dari array insert
-    $stored = DB::table('transactions')->insert([
-        'rfid_uid'   => $rfid,
-        'volume_ml'  => $volume,
-        'created_at' => $now,
-        'updated_at' => $now,
-    ]);
+        if ($stored) {
+            return response()->json([
+                'status'  => 'ok',
+                'message' => 'Transaksi tersimpan',
+                'data'    => [
+                    'rfid_uid'  => $rfid,
+                    'volume_ml' => $volume,
+                ]
+            ], 201);
+        }
 
-    if ($stored) {
-        return response()->json([
-            'status'  => 'ok',
-            'message' => 'Transaksi tersimpan',
-            'data'    => [
-                'rfid_uid'  => $rfid,
-                'volume_ml' => $volume
-            ]
-        ], 201);
+        return response()->json(['status' => 'error'], 500);
     }
-
-    return response()->json(['status' => 'error'], 500);
 }
