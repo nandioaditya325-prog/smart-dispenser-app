@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->nullable()->constrained('orders')->nullOnDelete();
             $table->foreignId('device_id')->nullable()->constrained('devices')->nullOnDelete();
+            $table->string('rfid_uid')->nullable();
             $table->float('final_volume_ml')->default(0);
-            $table->boolean('success')->default(false);
+            $table->string('status')->default('success');
+            $table->boolean('success')->default(true);
             $table->string('failure_reason')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
