@@ -21,3 +21,10 @@ Route::get('/run-migrate', function () {
     \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
     return response()->json(['status' => 'Migration Success!']);
 });
+
+Route::get('/clear-cache', function () {
+    \Illuminate\Support\Facades\Artisan::call('route:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    return response()->json(['status' => 'Cache Cleared Successfully!']);
+});
