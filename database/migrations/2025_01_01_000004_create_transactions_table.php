@@ -6,28 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // Safe check: Hanya tambahkan kolom 'status' jika belum ada di tabel
-        if (Schema::hasTable('transactions') && !Schema::hasColumn('transactions', 'status')) {
-            Schema::table('transactions', function (Blueprint $table) {
-                $table->string('status')->default('success')->after('final_volume_ml');
-            });
-        }
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('device_id')->constrained('devices')->cascadeOnDelete();
+            $table->string('qr_code_id')->unique();
+            $table->integer('amount');
+            $table->integer('target_volume_ml');
+            $table->integer('final_volume_ml')->default(0);
+            $table->string('status')->default('success'); // <-- Tambahkan baris ini langsung di sini!
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        if (Schema::hasTable('transactions') && Schema::hasColumn('transactions', 'status')) {
-            Schema::table('transactions', function (Blueprint $table) {
-                $table->dropColumn('status');
-            });
-        }
+        Schema::dropIfExists('transactions');
     }
 };
