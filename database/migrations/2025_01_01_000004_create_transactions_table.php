@@ -7,28 +7,27 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Transactions table: final record of a completed (or failed) dispense
-     * cycle, published by the ESP32 to smartdispenser/transaction and
-     * persisted here for reporting/reconciliation.
+     * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('order_id')->nullable()->constrained('orders')->nullOnDelete();
-            $table->foreignId('device_id')->nullable()->constrained('devices')->nullOnDelete();
-            $table->string('rfid_uid')->nullable();
-            $table->float('final_volume_ml')->default(0);
-            $table->string('status')->default('success');
-            $table->boolean('success')->default(true);
-            $table->string('failure_reason')->nullable();
-            $table->timestamp('completed_at')->nullable();
-            $table->timestamps();
-        });
+        // Safe check: Hanya tambahkan kolom 'status' jika belum ada di tabel
+        if (Schema::hasTable('transactions') && !Schema::hasColumn('transactions', 'status')) {
+            Schema::table('transactions', function (Blueprint $table) {
+                $table->string('status')->default('success')->after('final_volume_ml');
+            });
+        }
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        if (Schema::hasTable('transactions') && Schema::hasColumn('transactions', 'status')) {
+            Schema::table('transactions', function (Blueprint $table) {
+                $table->dropColumn('status');
+            });
+        }
     }
 };
