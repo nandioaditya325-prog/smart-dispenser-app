@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class QrisController extends Controller
 {
-    /**
-     * Mengembalikan data string QRIS statis untuk ditampilkan di LCD ESP32
-     */
     public function info()
     {
         return response()->json([
@@ -19,9 +16,6 @@ class QrisController extends Controller
         ], 200);
     }
 
-    /**
-     * Cek apakah ada transaksi lunas yang harus dituangkan
-     */
     public function checkStatus()
     {
         return response()->json([
@@ -30,9 +24,6 @@ class QrisController extends Controller
         ], 200);
     }
 
-    /**
-     * Menerima konfirmasi bahwa penuangan air telah selesai
-     */
     public function complete(Request $request)
     {
         return response()->json([

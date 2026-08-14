@@ -15,7 +15,7 @@ Route::get('/qris/check-status', [QrisController::class, 'checkStatus']);
 Route::post('/qris/complete', [QrisController::class, 'complete']);
 Route::post('/qris/callback', [QrisController::class, 'complete']);
 
-// Route pembersih cache
+// Route Pembersih Cache Server Railway
 Route::get('/clear-cache', function () {
     \Illuminate\Support\Facades\Artisan::call('route:clear');
     \Illuminate\Support\Facades\Artisan::call('config:clear');
