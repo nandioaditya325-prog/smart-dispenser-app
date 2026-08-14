@@ -15,7 +15,6 @@ class QrisController extends Controller
         return response()->json([
             'status' => 'success',
             'merchant' => 'Depot Air Minum',
-            // Ganti string QRIS statis ini jika kamu punya string dari InterActive / Xendit
             'qr_string' => '00020101021126570011ID.CO.QRIS.WWW01189360091400000000005204581253033605802ID5913SMART DISPENSER6007SEMARANG61055011762070703A0163041A2B'
         ]);
     }
@@ -25,7 +24,6 @@ class QrisController extends Controller
      */
     public function checkStatus()
     {
-        // Untuk tahap pengujian awal, kembalikan dispense = false
         return response()->json([
             'dispense' => false,
             'id' => 0
