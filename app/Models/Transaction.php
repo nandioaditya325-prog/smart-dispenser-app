@@ -10,6 +10,8 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
+        'order_id',
+        'device_id',
         'rfid_uid',
         'water_type',
         'volume_ml',
