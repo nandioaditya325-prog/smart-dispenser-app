@@ -10,12 +10,18 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('device_id')->constrained('devices')->cascadeOnDelete();
-            $table->string('qr_code_id')->unique();
-            $table->integer('amount');
-            $table->integer('target_volume_ml');
+            $table->string('order_id')->nullable();
+            $table->foreignId('device_id')->nullable()->constrained('devices')->nullOnDelete();
+            $table->string('rfid_uid')->nullable();
+            $table->string('qr_code_id')->nullable();
+            $table->string('water_type')->default('normal');
+            $table->integer('volume_ml')->default(0);
+            $table->integer('target_volume_ml')->default(0);
             $table->integer('final_volume_ml')->default(0);
-            $table->string('status')->default('success'); // <-- Tambahkan baris ini langsung di sini!
+            $table->integer('amount')->default(0);
+            $table->integer('price')->default(0);
+            $table->string('status')->default('success');
+            $table->string('payment_status')->default('pending');
             $table->timestamps();
         });
     }
