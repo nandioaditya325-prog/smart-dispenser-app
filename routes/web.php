@@ -1,20 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use App\Http\Controllers\Web\DashboardController;
 
-// Auto-run migration secara otomatis saat aplikasi diakses di Railway
+// Paksa tambahkan kolom rfid_uid langsung ke tabel SQLite di Railway
 try {
-    Artisan::call('migrate', ['--force' => true]);
+    if (Schema::hasTable('transactions') && !Schema::hasColumn('transactions', 'rfid_uid')) {
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->string('rfid_uid')->nullable();
+        });
+    }
 } catch (\Throwable $e) {
-    // Abaikan error jika migrasi sudah berjalan
+    // Abaikan jika sudah ada
 }
 
 Route::get('/', [DashboardController::class, 'index']);
 
 // --- INI WAJIB ADA ---
-// Menangani jika diakses langsung lewat address bar di HP (GET)
 Route::get('/checkout', function () {
     return redirect('/');
 });
