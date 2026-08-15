@@ -1,7 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Web\DashboardController;
+
+// Auto-run migration secara otomatis saat aplikasi diakses di Railway
+try {
+    Artisan::call('migrate', ['--force' => true]);
+} catch (\Throwable $e) {
+    // Abaikan error jika migrasi sudah berjalan
+}
 
 Route::get('/', [DashboardController::class, 'index']);
 
