@@ -7,39 +7,28 @@ use Illuminate\Http\Request;
 
 class QrisController extends Controller
 {
-    /**
-     * Mengembalikan data string QRIS statis untuk ditampilkan di LCD ESP32
-     */
     public function info()
     {
         return response()->json([
             'status' => 'success',
             'merchant' => 'Depot Air Minum',
-            // Ganti string QRIS statis ini jika kamu punya string dari InterActive / Xendit
             'qr_string' => '00020101021126570011ID.CO.QRIS.WWW01189360091400000000005204581253033605802ID5913SMART DISPENSER6007SEMARANG61055011762070703A0163041A2B'
-        ]);
+        ], 200);
     }
 
-    /**
-     * Cek apakah ada transaksi lunas yang harus dituangkan
-     */
     public function checkStatus()
     {
-        // Untuk tahap pengujian awal, kembalikan dispense = false
         return response()->json([
             'dispense' => false,
             'id' => 0
-        ]);
+        ], 200);
     }
 
-    /**
-     * Menerima konfirmasi bahwa penuangan air telah selesai
-     */
     public function complete(Request $request)
     {
         return response()->json([
             'status' => 'completed',
             'message' => 'Penuangan selesai'
-        ]);
+        ], 200);
     }
 }

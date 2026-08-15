@@ -2,26 +2,20 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\QrisController;
 
-// 1. ESP32 minta data QRIS & Nama Merchant untuk ditampilkan di LCD
-Route::get('/qris/info', [TransactionController::class, 'getQrisInfo']);
+/*
+|--------------------------------------------------------------------------
+| API Routes for Smart Dispenser ESP32
+|--------------------------------------------------------------------------
+*/
 
-// 2. InterActive QRIS mengirim sinyal notifikasi saat ada uang masuk
-Route::post('/qris/callback', [TransactionController::class, 'handleCallback']);
+Route::get('/qris/info', [QrisController::class, 'info']);
+Route::get('/qris/check-status', [QrisController::class, 'checkStatus']);
+Route::post('/qris/complete', [QrisController::class, 'complete']);
+Route::post('/qris/callback', [QrisController::class, 'complete']);
 
-// 3. ESP32 bertanya ke server: "Apakah uang Rp 1.000 sudah masuk?" (Polling)
-Route::get('/qris/check-status', [TransactionController::class, 'checkStatus']);
-
-// 4. ESP32 memberi kabar ke server kalau penuangan air sudah selesai
-Route::post('/qris/complete', [TransactionController::class, 'completeTransaction']);
-
-// 5. Route bantuan untuk jalankan migrasi database
-Route::get('/run-migrate', function () {
-    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-    return response()->json(['status' => 'Migration Success!']);
-});
-
+// Route Pembersih Cache Server Railway
 Route::get('/clear-cache', function () {
     \Illuminate\Support\Facades\Artisan::call('route:clear');
     \Illuminate\Support\Facades\Artisan::call('config:clear');
