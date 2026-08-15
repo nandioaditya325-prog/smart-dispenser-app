@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class DashboardController extends Controller
 {
@@ -29,6 +31,17 @@ class DashboardController extends Controller
         } else {
             $volume = 500;
             $price = 1500;
+        }
+
+        // Memastikan kolom rfid_uid ada di SQLite Railway sebelum Insert dijalankan
+        try {
+            if (Schema::hasTable('transactions') && !Schema::hasColumn('transactions', 'rfid_uid')) {
+                Schema::table('transactions', function (Blueprint $table) {
+                    $table->string('rfid_uid')->nullable();
+                });
+            }
+        } catch (\Throwable $e) {
+            // Abaikan jika eksekusi gagal/sudah ada
         }
 
         $transaction = Transaction::create([
