@@ -32,13 +32,18 @@ class DashboardController extends Controller
         }
 
         $transaction = Transaction::create([
-            'order_id'       => null,
-            'device_id'      => null,
-            'rfid_uid'       => 'QRIS-' . rand(100, 999),
-            'water_type'     => $request->water_type,
-            'volume_ml'      => $volume,
-            'price'          => $price,
-            'payment_status' => 'pending',
+            'order_id'         => 'ORD-' . time() . '-' . rand(100, 999),
+            'device_id'        => null,
+            'rfid_uid'         => 'QRIS-' . rand(100, 999),
+            'qr_code_id'       => null,
+            'water_type'       => $request->water_type,
+            'volume_ml'        => $volume,
+            'target_volume_ml' => $volume,
+            'final_volume_ml'  => 0,
+            'amount'           => $price,
+            'price'            => $price,
+            'status'           => 'pending',
+            'payment_status'   => 'pending',
         ]);
 
         return redirect()->route('payment', $transaction->id);
@@ -53,7 +58,10 @@ class DashboardController extends Controller
     public function paySuccess($id)
     {
         $transaction = Transaction::findOrFail($id);
-        $transaction->update(['payment_status' => 'paid']);
+        $transaction->update([
+            'payment_status' => 'paid',
+            'status'         => 'success',
+        ]);
 
         return redirect('/')->with('success', 'Pembayaran QRIS Berhasil! Silahkan ambil air Anda.');
     }
