@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../smart-dispenser-app"
+		},
+		{
+			"name": "smart-dispenser-esp32",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
