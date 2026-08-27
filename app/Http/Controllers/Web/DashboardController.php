@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class DashboardController extends Controller
 {
@@ -29,6 +31,13 @@ class DashboardController extends Controller
         } else {
             $volume = 500;
             $price = 1500;
+        }
+
+        // Cek dan buat kolom rfid_uid otomatis jika belum ada di PostgreSQL Railway
+        if (!Schema::hasColumn('transactions', 'rfid_uid')) {
+            Schema::table('transactions', function (Blueprint $table) {
+                $table->string('rfid_uid')->nullable();
+            });
         }
 
         $transaction = Transaction::create([

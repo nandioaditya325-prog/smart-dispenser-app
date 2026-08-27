@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('order_id')->nullable();
-            $table->foreignId('device_id')->nullable()->constrained('devices')->nullOnDelete();
+            $table->unsignedBigInteger('device_id')->nullable();
             $table->string('rfid_uid')->nullable();
             $table->string('qr_code_id')->nullable();
             $table->string('water_type')->default('normal');

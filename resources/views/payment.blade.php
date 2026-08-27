@@ -13,21 +13,20 @@
                 <p class="text-muted">Dispenser Air {{ strtoupper($transaction->water_type) }} ({{ $transaction->volume_ml }} ml)</p>
                 
                 <div class="my-3">
-                    <!-- QR Code Dummy menggunakan API Gratis -->
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=SIMULASI_QRIS_PAYMENT_{{ $transaction->id }}" alt="QRIS Code" class="img-fluid border p-2">
+                    <!-- QR Code Statis Depot Air Minum -->
+                    <img src="{{ asset('images/qris-depot.png') }}" alt="QRIS Depot Air Minum" class="img-fluid border p-2" style="max-width: 250px;">
                 </div>
 
                 <h3 class="fw-bold text-success mb-3">Rp {{ number_format($transaction->price) }}</h3>
 
-                <!-- Tombol Simulasi Lunas -->
+                <!-- Tombol Konfirmasi Bayar -->
                 <form action="{{ route('pay.success', $transaction->id) }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-success btn-lg w-100">
-                        [SIMULASI] Saya Sudah Bayar
+                        Saya Sudah Bayar
                     </button>
                 </form>
 
-                <!-- PERBAIKAN DI SINI: Menggunakan url('/') agar mengarah ke subfolder proyek -->
                 <a href="{{ url('/') }}" class="btn btn-link mt-2 text-decoration-none text-muted">Batal</a>
             </div>
         </div>

@@ -90,7 +90,7 @@
                     <tbody>
                         @forelse($latestTransactions as $trx)
                         <tr>
-                            <td>{{ $trx->created_at->format('H:i:s') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($trx->created_at)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->timezone('Asia/Jakarta')->format('d F Y, H:i:s') }}</td>
                             <td>{{ $trx->rfid_uid }}</td>
                             <td><span class="badge bg-secondary">{{ strtoupper($trx->water_type) }}</span></td>
                             <td>{{ $trx->volume_ml }} ml</td>
